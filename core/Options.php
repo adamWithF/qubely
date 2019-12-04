@@ -126,7 +126,14 @@ if (!class_exists('QUBELY_Options')) {
                                                 <?php } ?>
                                             </select>
                                             <p class="description"> <?php _e('Select where you want to save CSS.', 'qubely'); ?></p>
-
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row"><?php esc_html_e('Font Awesome Pro Kit', 'qubely'); ?></th>
+                                        <td>
+                                            <?php $value = $option_data['font_awesome_kit']; ?>
+                                            <input type="text" name="qubely_options[font_awesome_kit]" value="<?php echo $value; ?>">
+                                            <p class="description"> <?php printf( __( 'Put Your <a href="%s" target="_blank">Font Awesome Pro Kit ID</a>.', 'qubely' ), 'https://fontawesome.com/kits' ); ?></p>
                                             <?php submit_button(); ?>
                                         </td>
                                     </tr>

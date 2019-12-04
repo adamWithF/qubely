@@ -79,6 +79,10 @@ class QUBELY
 
 		$palette = get_theme_support( 'qubely-color-palette' );
 		$palette = array_replace( array('#062040','#566372','#2084F9','#F3F3F3','#EEEEEE','#FFFFFF'), ($palette ? $palette[0] : array()) );
+
+		$option_data = get_option('qubely_options');
+		$option_data = isset($option_data['font_awesome_kit']) ? $option_data['font_awesome_kit'] : '';
+
 		wp_localize_script('qubely-blocks-js', 'qubely_admin', array(
 			'plugin' => QUBELY_DIR_URL,
             'ajax' => admin_url('admin-ajax.php'),
@@ -86,7 +90,8 @@ class QUBELY
 			'shapes' => $this->getSvgShapes(),
 			'all_taxonomy' => $this->get_all_taxonomy(),
 			'image_sizes'  => $this->get_all_image_sizes(),
-			'palette' => $palette
+			'palette' => $palette,
+			'fontawesome' => $option_data ? true : false
 		));
 	}
 
@@ -133,10 +138,19 @@ class QUBELY
 	public function qubely_admin_assets()
 	{
 		wp_enqueue_style('qubely-animation', QUBELY_DIR_URL . 'assets/css/animation.css', false, QUBELY_VERSION);
-		wp_enqueue_style('font-awesome', QUBELY_DIR_URL . 'assets/css/font-awesome.min.css', false, QUBELY_VERSION);
 		wp_enqueue_style('qubely-options', QUBELY_DIR_URL . 'assets/css/options.css', false, QUBELY_VERSION);
 		wp_enqueue_script('qubely-magnific-popup', QUBELY_DIR_URL . 'assets/js/jquery.magnific-popup.min.js', array('jquery'), QUBELY_VERSION, true);
 		wp_enqueue_style('qubely-magnific-popup-style', QUBELY_DIR_URL . 'assets/css/magnific-popup.css', false, QUBELY_VERSION);
+
+		$option_data = get_option('qubely_options');
+		$option_data = isset($option_data['font_awesome_kit']) ? $option_data['font_awesome_kit'] : '';
+		if ($option_data) {
+			wp_enqueue_script('qubely-sss-popup-script', 'https://kit.fontawesome.com/'.$option_data.'.js', array(), QUBELY_VERSION);
+			wp_script_add_data('qubely-sss-popup-script', array('crossorigin'), array('anonymous'));
+		} else {
+			wp_enqueue_style('qubely-font-awesome', QUBELY_DIR_URL . 'assets/css/font-awesome.min.css', false, QUBELY_VERSION);
+		}
+
 	}
 
 
@@ -265,7 +279,6 @@ class QUBELY
 	{
 		if(get_post_meta(get_the_ID(), '_qubely_css', true) != '') {
 			wp_enqueue_style('qubely-animation', QUBELY_DIR_URL . 'assets/css/animation.css', false, QUBELY_VERSION);
-			wp_enqueue_style('qubely-font-awesome', QUBELY_DIR_URL . 'assets/css/font-awesome.min.css', false, QUBELY_VERSION);
 			wp_enqueue_style('qubely-style-min', QUBELY_DIR_URL . 'assets/css/style.min.css', false, QUBELY_VERSION);
 			wp_enqueue_script('qubely-magnific-popup-script', QUBELY_DIR_URL . 'assets/js/jquery.magnific-popup.min.js', array('jquery'), QUBELY_VERSION);
 			wp_enqueue_style('qubely-magnific-popup-style', QUBELY_DIR_URL . 'assets/css/magnific-popup.css', false, QUBELY_VERSION);
@@ -275,6 +288,15 @@ class QUBELY
 				'plugin' => QUBELY_DIR_URL,
 				'ajax' => admin_url('admin-ajax.php')
 			));
+
+			$option_data = get_option('qubely_options');
+			$option_data = isset($option_data['font_awesome_kit']) ? $option_data['font_awesome_kit'] : '';
+			if ($option_data) {
+				wp_enqueue_script('qubely-sss-popup-script', 'https://kit.fontawesome.com/'.$option_data.'.js', array(), QUBELY_VERSION);
+				wp_script_add_data('qubely-sss-popup-script', array('crossorigin'), array('anonymous'));
+			} else {
+				wp_enqueue_style('qubely-font-awesome', QUBELY_DIR_URL . 'assets/css/font-awesome.min.css', false, QUBELY_VERSION);
+			}
 		}
 	}
 

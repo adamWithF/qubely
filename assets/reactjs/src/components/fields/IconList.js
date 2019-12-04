@@ -3,7 +3,12 @@ const { __ } = wp.i18n
 const { Component, Fragment } = wp.element
 import Toggle from './Toggle'
 import Color from './Color'
-import IconListData from './assets/IconListData'
+// import IconListData from './assets/IconListData'
+import Free from './assets/icons/Free'
+import Brand from './assets/icons/Brand'
+import Light from './assets/icons/Light'
+import Regular from './assets/icons/Regular'
+import Solid from './assets/icons/Solid'
 
 class IconList extends Component {
 
@@ -16,18 +21,34 @@ class IconList extends Component {
         }
     }
 
+    get_font(){
+        let data = Brand.map(x => 'fab fa-'+x);
+        if (qubely_admin.fontawesome){
+            const _solid = Solid.map(x => 'fas fa-'+x);
+            const _light = Light.map(x => 'fal fa-'+x);
+            const _regular = Regular.map(x => 'far fa-'+x);
+            data = data.concat(_solid)
+            data = data.concat(_light)
+            data = data.concat(_regular)
+            return data
+        } else {
+            data = data.concat(Free)
+            return data
+        }
+    }
+
     render() {
         const { value, disableToggle, colorSettings, iconColor, onColorChange } = this.props
         const { filterText } = this.state
         var finalData = [];
         if (filterText.length > 2) {
-            IconListData.forEach(name => {
+            this.get_font().forEach(name => {
                 if (name.includes(filterText)) {
                     finalData.push(name)
                 }
             })
         } else {
-            finalData = IconListData;
+            finalData = this.get_font();
         }
         return (
             <div className={`qubely-field qubely-field-icon-list ${disableToggle ? '' : 'qubely-toggle-enabled'}`}>
