@@ -32,10 +32,6 @@ import './blocks/team'                  // Team
 import './blocks/pricing'               // pricing
 import './blocks/timeline'              // Timeline
 import './blocks/postgrid'              // Postgrid
-import './blocks/row/column'            // Column
-import './blocks/button'                // Button
-import './blocks/text'                  // Text
-import './blocks/icon'                  // Icon
 import './blocks/map'                   // Map
 import './blocks/divider'               // Divider
 import './blocks/infobox'               // Info Box
@@ -60,6 +56,7 @@ import './blocks/timeline'              // Timeline
 import './blocks/postgrid'              // Postgrid
 import './blocks/animatedheadline'      // Animated Headline
 import './blocks/pieprogress'           // PieProgress
+import './blocks/countdown'             // Countdown
 
 
 
