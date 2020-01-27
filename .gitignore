@@ -68,7 +68,7 @@ assets/js/blocks.build.js
 assets/js/qubely.dev.js
 assets/js/qubely.dev.js.map
 assets/js/qubely.min.js
-assets/css/style.min.css
+!assets/css/style.min.css
 assets/js/blocks.build.min.js
 assets/js/blocks.build.js.map
 assets/reactjs/node_modules/
