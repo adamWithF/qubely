@@ -5,17 +5,23 @@
  *
  * @since 1.1.0
  */
+
 function register_block_qubely_pricing()
 {
 	// Check if the register function exists.
 	if (!function_exists('register_block_type')) {
 		return;
 	}
+
+	require(QUBELY_DIR_PATH . '/core/attributes/global-attributes.php');
+	require(QUBELY_DIR_PATH . '/core/attributes/button-attributes.php');
+	require(QUBELY_DIR_PATH . '/core/attributes/list-attributes.php');
+
 	register_block_type(
 		'qubely/pricing',
 		array(
 			'render_callback' => 'render_block_qubely_pricing',
-			'attributes' => array(
+			'attributes' => array_merge($qubely_appdy_globalAttributes, $qubely_appdy_buttonAttributes, $qubely_appdy_listAttributes, array(
   'uniqueId' =>
   array (
     'type' => 'string',
@@ -1424,26 +1430,24 @@ function register_block_qubely_pricing()
 		'type' => 'number',
 		'default' => null
 	)
-	// ...globalAttributes,
-	// ...buttonAttributes,
-	// ...listAttributes,
-			))
+			)))
 	);
 }
 
 function qubely_appdy_render_Currency_content($att) {
-	$result = '';
 	$currency = isset($att['currency']) ? $att['currency'] : '$';
 	$currencyCustom = isset($att['currencyCustom']) ? $att['currencyCustom'] : '';
+	$productId = isset($att['productId']) ? $att['productId'] : null;
+	$result = $currency;
 
-		if ($currency == 'custom') {
-			$result = $currencyCustom;
+	if ($productId) {
+		$result = get_woocommerce_currency_symbol();
 
-		} else if ($currency == 'current') {
-			$result = get_woocommerce_currency_symbol();
-		}
+	} else if ($currency == 'custom') {
+		$result = $currencyCustom;
+	}
 
-		return sprintf('<span className="qubely-pricing-currency">%s</span>', $result);
+	return sprintf('<span className="qubely-pricing-currency">%s</span>', $result);
 }
 
 function qubely_render_icon_list_save($att) {
@@ -1464,13 +1468,13 @@ function qubely_render_icon_list_save($att) {
 			$html .= sprintf('<div class="qubely-list-item qubely-list-item-%s">', $i);
 
 			if ($enableListIcons && $iconPosition == 'left') {
-				$html .= sprintf('<span class="qubely-list-item-icon %s fa-fw" style="%s" />', $item['icon'], isset($item['customColor']) ? 'color: ' . $item['customColor'] : '');
+				$html .= sprintf('<span class="qubely-list-item-icon %s fa-fw" style="%s"></span>', $item['icon'], isset($item['customColor']) ? 'color: ' . $item['customColor'] : '');
 			}
 
 			$html .= sprintf('<div class="qubely-list-item-text-%s qubely-text" id="qubely-list-item-text-%s">%s</div>', $i, $i, $item['text']);
 
 			if ($enableListIcons && $iconPosition == 'right') {
-				$html .= sprintf('<span class="qubely-list-item-icon %s fa-fw" style="%s" />', $item['icon'], isset($item['customColor']) ? 'color: ' . $item['customColor'] : '');
+				$html .= sprintf('<span class="qubely-list-item-icon %s fa-fw" style="%s"></span>', $item['icon'], isset($item['customColor']) ? 'color: ' . $item['customColor'] : '');
 			}
 
 			$html .= '</div>';
@@ -1483,17 +1487,41 @@ function qubely_render_icon_list_save($att) {
 }
 
 function qubely_appdy_render_button_save($att) {
-	$buttonUrl = isset($att['buttonUrl']) ? $att['buttonUrl'] : '#';
-	$buttonText = isset($att['buttonText']) ? $att['buttonText'] : '';
+	$buttonUrl = isset($att['buttonUrl']) ? $att['buttonUrl'] : array('url' => '#', 'nofollow' => false, 'target' => false);
+	$buttonText = isset($att['buttonText']) ? $att['buttonText'] : 'Button';
 	$enablePostButtonText = isset($att['enablePostButtonText']) ? $att['enablePostButtonText'] : false;
 	$postButtonText = isset($att['postButtonText']) ? $att['postButtonText'] : '';
+	$enableButton = isset($att['enableButton']) ? $att['enableButton'] : false;
+	$buttonFillType = isset($att['buttonFillType']) ? $att['buttonFillType'] : 'outline';
+	$buttonSize = isset($att['buttonSize']) ? $att['buttonSize'] : 'large';
+	$buttonIconName = isset($att['buttonIconName']) ? $att['buttonIconName'] : '';
+	$buttonIconPosition = isset($att['buttonIconPosition']) ? $att['buttonIconPosition'] : 'right';
+	$buttonTag = isset($att['buttonTag']) ? $att['buttonTag'] : 'a';
 
 	$html = '<div class="qubely-pricing-button">';
+	$buttonHtml = '';
+
+	if ($buttonIconPosition == 'left') {
+		$buttonHtml = sprintf('<i class="qubely-btn-icon %s"></i>', $buttonIconName);
+	}
+
+	$buttonHtml .= $buttonText;
+
+	if ($buttonIconPosition == 'right') {
+		$buttonHtml .= sprintf('<i class="qubely-btn-icon %s"></i>', $buttonIconName);
+	}
+
 	$html .= '<div class="qubely-block-btn-wrapper">';
 	$html .= '<div class="qubely-block-btn">';
-	$html .= sprintf('<a class="qubely-block-btn-anchor is-large" href="%s">%s</a>', $buttonUrl, $buttonText);
-	$html .= '</div>';
-	$html .= '</div>';
+
+	if ($buttonTag == 'a') {
+		$html .= sprintf('<a class="qubely-block-btn-anchor is-%s" href="%s" %s %s>%s</a>', $buttonSize, (isset($buttonUrl['url']) ? $buttonUrl['url'] : '#'), isset($buttonUrl['target']) && $buttonUrl['target'] ? 'target="_blank"' : '', isset($buttonUrl['nofollow']) && $buttonUrl['nofollow'] ? 'rel="nofollow noopener noreferrer"' : (isset($buttonUrl['target']) && $buttonUrl['target'] ? 'rel="noopener noreferrer"' : ''), $buttonHtml);
+
+	} else {
+		$html .= sprintf('<button class="qubely-block-btn-anchor is-%s" type="submit" role="button">%s</button>', $buttonSize, $buttonHtml);
+	}
+
+	$html .= '</div></div>';
 
 	if ($enablePostButtonText) {
 		$html .= '<div className="qubely-pricing-postbutton-text">';
@@ -1525,22 +1553,20 @@ function render_block_qubely_pricing($att) {
 	$enableDuration = isset($att['enableDuration']) ? $att['enableDuration'] : '';
 	$durationPosition = isset($att['durationPosition']) ? $att['durationPosition'] : '';
 	$duration = isset($att['duration']) ? $att['duration'] : '';
-	$subTitle = isset($att['subTitle']) ? $att['subTitle'] : '';
 	$enablePostButtonText = isset($att['enablePostButtonText']) ? $att['enablePostButtonText'] : '';
 	$postButtonText = isset($att['postButtonText']) ? $att['postButtonText'] : '';
 	$listAlignment = isset($att['listAlignment']) ? $att['listAlignment'] : '';
 	$discountPrice = isset($att['discountPrice']) ? $att['discountPrice'] : '';
-	$productId = isset($att['productId']) ? $att['productId'] : null;
+	$productId = isset($att['productId']) ? intval($att['productId']) : null;
 	$price = isset($att['price']) ? $att['price'] : '';
 	$discount = isset($att['discount']) ? $att['discount'] : null;
 	$current_price = null;
 	$enableFeatures = isset($att['enableFeatures']) ? $att['enableFeatures'] : false;
 	$animation = isset($att['animation']) ? $att['animation'] : array();
 
-	if ($productId) {
-		$product_id = intval($_GET['$product_id']);
-		$product = wc_get_product($product_id);
-		$regular_price = is_on_sale() ? $product->get_sale_price() : $product->get_regular_price();
+	if (isset($productId)) {
+		$product = wc_get_product($productId);
+		$regular_price = $product->is_on_sale() ? $product->get_sale_price() : $product->get_regular_price();
 		$current_price = $product->get_price();
 	}
 
@@ -1597,7 +1623,7 @@ function render_block_qubely_pricing($att) {
 		$html .= '</div>';
 	}
 
-	//	</div>
+	$html .= '</div>';
 
 	if ($layout == 4) {
 		$html .= '<div class="qubely-pricing-button">';
