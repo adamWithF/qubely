@@ -15,7 +15,11 @@ registerBlockType('qubely/pricing', {
         align: ['center', 'wide', 'full'],
     },
     example: {
-		attributes: {},
+		    attributes: {
+            ...globalAttributes,
+            ...buttonAttributes,
+            ...listAttributes,
+        },
 	  },
     deprecated: [{
     attributes: {
@@ -586,6 +590,7 @@ registerBlockType('qubely/pricing', {
     edit: Edit,
     save: Save
     }],
+    edit: Edit,
     save: function(props) {
         return null;
     }
