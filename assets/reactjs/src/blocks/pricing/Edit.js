@@ -197,11 +197,11 @@ class Edit extends Component {
 				alignment,
 				titleSpacing,
 				layout,
-				// Title 
+				// Title
 				title,
 				titleColor,
 				titleTypography,
-				//sub title 
+				//sub title
 				subTitleSpacing,
 				subTitleColor,
 				subTitleTypography,
