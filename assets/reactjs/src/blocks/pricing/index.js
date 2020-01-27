@@ -16,7 +16,8 @@ registerBlockType('qubely/pricing', {
     },
     example: {
 		attributes: {},
-	},
+	  },
+    deprecated: [{
     attributes: {
         uniqueId: { type: 'string', default: '' },
         ...globalAttributes,
@@ -207,6 +208,9 @@ registerBlockType('qubely/pricing', {
         currencyAlign: { type: 'string', default: '10', style: [{ selector: '{{QUBELY}} .qubely-pricing-currency{ display: inline-block; transform: translateY({{currencyAlign}}px); }' }] },
         currencyColor: { type: 'string', default: '#CACCCE', style: [{ selector: '{{QUBELY}} .qubely-pricing-currency{color: {{currencyColor}}; }' }] },
         currencyTypography: { type: 'object', default: { openTypography: 1, size: { md: 34, unit: 'px' } }, style: [{ selector: '{{QUBELY}} .qubely-pricing-currency' }] },
+
+        // Woocommerce__
+        productId: { type: 'string', default: ''},
 
         // Duration__
         enableDuration: { type: 'boolean', default: true },
@@ -581,4 +585,8 @@ registerBlockType('qubely/pricing', {
     },
     edit: Edit,
     save: Save
+    }],
+    save: function(props) {
+        return null;
+    }
 })

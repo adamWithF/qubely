@@ -221,6 +221,7 @@ class Edit extends Component {
 				currencyAlign,
 				currencyColor,
 				currencyTypography,
+				productId,
 				// Duration
 				enableDuration,
 				duration,
@@ -487,6 +488,15 @@ class Edit extends Component {
 						}
 					</PanelBody>
 
+					<PanelBody title={__('Woocommerce')} opened={'Woocommerce' === openPanelSetting} onToggle={() => this.handlePanelOpenings(openPanelSetting !== 'Woocommerce' ? 'Woocommerce' : '')}>
+				<TextControl
+			label={__('Woocommerce Product ID')}
+			value={productId}
+			placeholder={__('Woocommerce Product ID')}
+			onChange={val => setAttributes({ productId: val})}
+				/>
+
+          </PanelBody>
 
 					<PanelBody title={__('Duration')} opened={'Duration' === openPanelSetting} onToggle={() => this.handlePanelOpenings(openPanelSetting !== 'Duration' ? 'Duration' : '')}>
 						<Toggle

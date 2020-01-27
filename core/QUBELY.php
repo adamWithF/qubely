@@ -77,6 +77,7 @@ class QUBELY
 	public function init_dynamic_blocks()
 	{
 		require_once QUBELY_DIR_PATH . 'core/blocks/postgrid.php';
+		require_once QUBELY_DIR_PATH . 'core/blocks/pricing.php';
 	}
 
 	/**
