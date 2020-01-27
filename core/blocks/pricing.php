@@ -320,12 +320,12 @@ function register_block_qubely_pricing()
       'openTypography' => 1,
       'height' =>
       array (
-        'md' => 70,
+        'md' => 44,
         'unit' => 'px',
       ),
       'size' =>
       array (
-        'md' => 70,
+        'md' => 44,
         'unit' => 'px',
       ),
     ),
@@ -1447,7 +1447,7 @@ function qubely_appdy_render_Currency_content($att) {
 		$result = $currencyCustom;
 	}
 
-	return sprintf('<span className="qubely-pricing-currency">%s</span>', $result);
+	return sprintf('<span class="qubely-pricing-currency">%s</span>', $result);
 }
 
 function qubely_render_icon_list_save($att) {
@@ -1524,8 +1524,8 @@ function qubely_appdy_render_button_save($att) {
 	$html .= '</div></div>';
 
 	if ($enablePostButtonText) {
-		$html .= '<div className="qubely-pricing-postbutton-text">';
-		$html .= sprintf('<span className="qubely-pricing-post-button-text">%s</span>', $postButtonText);
+		$html .= '<div class="qubely-pricing-postbutton-text">';
+		$html .= sprintf('<span class="qubely-pricing-post-button-text">%s</span>', $postButtonText);
 		$html .= '</div>';
 	}
 
@@ -1585,18 +1585,18 @@ function render_block_qubely_pricing($att) {
 	$html .= '</span>';
 
 	if ($layout == 3 || $layout == 4) {
-		$html .= '<div className="qubely-sub-title-wrapper">';
+		$html .= '<div class="qubely-sub-title-wrapper">';
 		$html .= sprintf('<div class="qubely-sub-title">%s</div>', $subtitle);
 		$html .= '</div>';
 	}
 
-	$html .= '<div className="qubely-pricing-wrapper">';
+	$html .= '<div class="qubely-pricing-wrapper">';
 
 	if ($currencyPosition == 'before') {
 		$html .= qubely_appdy_render_Currency_content($att);
 	}
 
-	$html .= '<span className="qubely-pricing-price">';
+	$html .= '<span class="qubely-pricing-price">';
 
 	if ($discount) {
 		$html .= sprintf('<strike>%s</strike>', $current_price ? $regular_price : $discountPrice);
@@ -1610,7 +1610,7 @@ function render_block_qubely_pricing($att) {
 	}
 
 	if ($enableDuration && $durationPosition == 'side') {
-		$html .= '<span className="qubely-pricing-duration">';
+		$html .= '<span class="qubely-pricing-duration">';
 		$html .= sprintf('<div class="qubely-product-duration">%s</div>', $duration);
     $html .= '</span>';
 	}
