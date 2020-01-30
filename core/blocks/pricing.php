@@ -1455,10 +1455,10 @@ function qubely_render_icon_list_save($att) {
 	$listItems = isset($att['listItems']) ? $att['listItems'] : array();
 	$enableListIcons = isset($att['enableListIcons']) ? $att['enableListIcons'] : false;
 	$iconColor = isset($att['iconColor']) ? $att['iconColor'] : '';
- 	$iconPosition = isset($att['iconPosition']) ? $att['iconPosition'] : 'left';
-	$listWraperClassName = isset($att['listWrapperClassName']) ? sprintf('qubely-list icon-position-%s', $iconPosition) : '';
+ 	$iconPosition = isset($att['iconPosition']) ? $att['iconPosition'] : '';
+	$listWraperClassName = sprintf('%s icon-position-%s', isset($att['listWrapperClassName']) ? $att['listWrapperClassName'] : '', $iconPosition);
 
-	$html = sprintf('<ul class="%s %s">', $listWraperClassName, $listWraperGlobalClassName);
+	$html = sprintf('<ul class="qubely-list %s %s">', $listWraperClassName, $listWraperGlobalClassName);
 
 	for ($i=0; $i < count($listItems); $i++) {
 		$item = $listItems[$i];
